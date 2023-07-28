@@ -1,0 +1,25 @@
+server:
+  port: 8888
+
+okta:
+  oauth2:
+    client-id: OhGWaP6h04v6NHfwcVnbnkUaHsE2Mq7X
+    client-secret: bmx-0cBRD3qq2gU_wK74YzG5TJdNZpZjsuBruC76SY38oPOoZkY1lDJQkVeYSLlX
+    issuer: https://dev-0ztm3v8co54it1fh.us.auth0.com/
+#    redirect-uri: http://localhost:8080/login/oauth2/code/auth0
+    scopes:
+      - openid
+      - profile
+      - email
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/louappeal
+    username: root
+    password: 02072015Aa.
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
