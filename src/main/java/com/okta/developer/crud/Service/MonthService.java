@@ -1,5 +1,4 @@
 package com.okta.developer.crud.Service;
-
 import com.okta.developer.crud.Repository.MonthRepository;
 import com.okta.developer.crud.model.Month;
 import org.springframework.scheduling.annotation.Async;
@@ -22,15 +21,13 @@ public class MonthService {
     }
 
 
-    public Optional<Month> getAllbyMonth(Long id){
-        return repository.findAllById(id);
-    }
-
     @Async
     public CompletableFuture<List<Month>> getAll(@AuthenticationPrincipal OAuth2User user) {
-        CompletableFuture<Long> userIdFuture = usersService.getById(user);
-        Long userId = userIdFuture.join();
-        List<Month> months = this.repository.findByUsers_Id(userId);
+
+        CompletableFuture<String> userIDFuture = usersService.getSubID(user);
+        String userID = userIDFuture.join();
+;
+        List<Month> months = this.repository.findBySub(userID);
 
         for (Month month : months) {
             month.setFormattedDate();

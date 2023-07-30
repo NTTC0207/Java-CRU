@@ -22,6 +22,8 @@ public class Transaction {
     @Column(updatable = false)
     private LocalDate date;
 
+
+
     private Double amount;
 
     @Column(name = "month_id",insertable = true, updatable = false)

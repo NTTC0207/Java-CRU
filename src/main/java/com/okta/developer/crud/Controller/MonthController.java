@@ -18,7 +18,6 @@ import java.util.concurrent.CompletableFuture;
 public class MonthController {
 
 
-    
     private final MonthService monthService;
 
     public MonthController(MonthService monthService) {

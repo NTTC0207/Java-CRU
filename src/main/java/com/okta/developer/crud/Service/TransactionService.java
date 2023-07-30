@@ -2,10 +2,8 @@ package com.okta.developer.crud.Service;
 
 import com.okta.developer.crud.Repository.MonthRepository;
 import com.okta.developer.crud.Repository.TransactionRepository;
-import com.okta.developer.crud.Repository.UsersRepository;
 import com.okta.developer.crud.model.Month;
 import com.okta.developer.crud.model.Transaction;
-import com.okta.developer.crud.model.Users;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Async;
@@ -26,16 +24,14 @@ public class TransactionService {
 
     private final TransactionRepository repository;
     private final MonthRepository monthRepository;
-    private final UsersRepository usersRepository;
     private final UsersService usersService;
-    private final ProfileService profileService;
 
-    public TransactionService(TransactionRepository repository, MonthRepository monthRepository, UsersRepository usersRepository, UsersService usersService, ProfileService profileService) {
+
+    public TransactionService(TransactionRepository repository, MonthRepository monthRepository, UsersService usersService) {
         this.repository = repository;
         this.monthRepository = monthRepository;
-        this.usersRepository = usersRepository;
         this.usersService = usersService;
-        this.profileService = profileService;
+
     }
 
 
@@ -61,20 +57,22 @@ public class TransactionService {
 
     @Async
     public CompletableFuture<Transaction> saveTranAndUpadateMonth(Transaction transaction, @AuthenticationPrincipal OAuth2User user){
-        CompletableFuture<Long> userIdFuture = usersService.getById(user);
-        Long userId = userIdFuture.join();
+
+        CompletableFuture<String> userIDFuture = usersService.getSubID(user);
+        String userID = userIDFuture.join();
 
         LocalDate transactionDate = LocalDate.now();
         LocalDate date = LocalDate.parse(transactionDate.toString(), DateTimeFormatter.ISO_LOCAL_DATE);
         int months = date.getMonthValue();
         int years = date.getYear();
 
-        Month summary = monthRepository.findByYearAndMonthAndUsersId(years,months,userId);
+        Month summary = monthRepository.findByYearAndMonthAndSub(years,months,userID);
 
         if(summary == null){
             Month month = new Month();
-            month.setUsers(new Users());
-            month.getUsers().setId(userId);
+//            month.setUsers(new Users());
+//            month.getUsers().setId(userId);
+            month.setSub(userID);
             month.setYear(years);
             month.setMonth(months);
             month.setAchievedQuota(new BigDecimal(transaction.getAmount()));
@@ -108,21 +106,20 @@ public class TransactionService {
 
     @Async
     public CompletableFuture<Transaction> updateTransactionAmountAndMonth(Transaction updatedTransaction, @AuthenticationPrincipal OAuth2User user) {
-        CompletableFuture<Long> userIdFuture = usersService.getById(user);
-        Long userId = userIdFuture.join();
+        CompletableFuture<String> userIDFuture = usersService.getSubID(user);
+        String userID = userIDFuture.join();
 
         LocalDate transactionDate = LocalDate.now();
         LocalDate date = LocalDate.parse(transactionDate.toString(), DateTimeFormatter.ISO_LOCAL_DATE);
         int months = date.getMonthValue();
         int years = date.getYear();
 
-        Month summary = monthRepository.findByYearAndMonthAndUsersId(years, months, userId);
+        Month summary = monthRepository.findByYearAndMonthAndSub(years, months, userID);
 
         if (summary == null) {
             // If the corresponding Month does not exist, create a new one and update the transaction
             Month month = new Month();
-            month.setUsers(new Users());
-            month.getUsers().setId(userId);
+            month.setSub(userID);
             month.setYear(years);
             month.setMonth(months);
             month.setAchievedQuota(new BigDecimal(updatedTransaction.getAmount()));

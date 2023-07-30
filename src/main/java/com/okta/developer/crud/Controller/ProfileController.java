@@ -1,7 +1,5 @@
 package com.okta.developer.crud.Controller;
 
-
-import com.okta.developer.crud.Service.ProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,12 +16,6 @@ import java.util.concurrent.CompletableFuture;
 @RequestMapping("/api/profile")
 public class ProfileController {
 
-    @Autowired
-    private final ProfileService profile;
-
-    public ProfileController(ProfileService profile) {
-        this.profile = profile;
-    }
 
     @GetMapping
     public ResponseEntity<?> getUser(@AuthenticationPrincipal OAuth2User user) {
@@ -32,10 +24,6 @@ public class ProfileController {
         } else {
             return ResponseEntity.ok().body(user.getAttributes());
         }
-    }
-    @GetMapping("/email")
-    public ResponseEntity<String> getUserEmail(@AuthenticationPrincipal OAuth2User user) {
-      return ResponseEntity.ok(profile.getEmail(user));
     }
 
 

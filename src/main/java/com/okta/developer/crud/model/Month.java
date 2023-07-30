@@ -19,6 +19,9 @@ public class Month {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "sub")
+    private String sub;
+
     @Column(name = "year",updatable = false)
     @JsonIgnore
     private int year;
@@ -40,11 +43,10 @@ public class Month {
     @Column(name="total_quota")
     private BigDecimal total_quota;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    @JsonIgnore
-    private Users users;
-
+//    @ManyToOne
+//    @JoinColumn(name = "user_id", referencedColumnName = "id")
+//    @JsonIgnore
+//    private Users users;
 
     // Transient field to store formatted date
     @Transient

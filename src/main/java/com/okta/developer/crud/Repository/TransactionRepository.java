@@ -14,7 +14,6 @@ public interface TransactionRepository extends JpaRepository<Transaction,Long> {
     List<Transaction> findAllByMonth_Id(Long monthId, Pageable pageable);
     long countByMonth_Id(Long monthId);
 
-    //  List<Transaction> findByUsers_Id(Long userId);
 
 
 }

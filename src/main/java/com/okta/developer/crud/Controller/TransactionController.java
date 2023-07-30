@@ -26,7 +26,6 @@ public class TransactionController {
         this.transactionService = transactionService;
         this.transactionRepository = transactionRepository;
     }
-
  
     @GetMapping("/{id}/{page}")
     public List<Transaction> getall(@PathVariable Long id,@PathVariable int page)throws ExecutionException, InterruptedException{

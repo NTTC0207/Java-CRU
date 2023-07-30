@@ -1,6 +1,5 @@
 package com.okta.developer.crud.config;
 
-import com.okta.developer.crud.Repository.UsersRepository;
 import com.okta.developer.crud.web.CookieCsrfFilter;
 import com.okta.developer.crud.web.SpaWebFilter;
 import org.springframework.context.annotation.Bean;
@@ -19,13 +18,13 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @Configuration
 public class SecurityConfiguration {
-    private final UsersRepository usersRepository;
+   // private final UsersRepository usersRepository;
 
-    public SecurityConfiguration(UsersRepository usersRepository) {
-        this.usersRepository = usersRepository;
-    }
+   // public SecurityConfiguration(UsersRepository usersRepository) {
+//        this.usersRepository = usersRepository;
+//    }
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, UsersRepository usersRepository) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
             .authorizeHttpRequests((authz) -> authz
